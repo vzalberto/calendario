@@ -8,4 +8,35 @@ Antes que otra cosa, debemos solicitar la libería de lugares a Google. Basta in
  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&sensor=true&libraries=places"></script>
  \end{lstlisting}
 
- 
+ Para obtener la ubicación del usuario, recurrimos al método getCurrentPosition, de la interfaz navigator.geoLocation. Está definido así:
+
+\begin{lstlisting}
+ interface Geolocation { 
+   void getCurrentPosition(PositionCallback successCallback,
+                           optional PositionErrorCallback errorCallback,
+                           optional PositionOptions options);
+
+   long watchPosition(PositionCallback successCallback,
+                      optional PositionErrorCallback errorCallback,
+                      optional PositionOptions options);
+
+   void clearWatch(long watchId);
+ };
+
+ callback PositionCallback = void (Position position);
+
+ callback PositionErrorCallback = void (PositionError positionError);
+ \end{lstlisting}
+
+ de manera que debemos definir una función para el manejo del objeto Position position que nos será devuelto. Escribimos la siguiente función:
+
+ \begin{lstlisting}
+ function updateMapCenter(Position position){
+  userPosition = position;
+  map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+  map.setZoom(15);
+}
+\end{lstlisting}
+
+que, como se puede ver, realiza 3 sencillas acciones: actualizar una variable global con la posición geográfica del usuario, actualiza el centro del mapa previamente inicializado y acerca el zoom.
+

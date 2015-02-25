@@ -1,8 +1,9 @@
 var map;
 var userPosition;
+  
+google.maps.event.addDomListener(window, 'load', initialize);
 
 function initialize() {
-  var markers = [];
   
   var mapOptions = {
     zoom: 4,
@@ -10,7 +11,29 @@ function initialize() {
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  // Create the search box and link it to the UI element.
+  embedSearchBox(map);
+ 
+}
+
+function getLocation(){
+    if (navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(updateMapCenter);
+    else
+        alert('Tu navegador es basura');
+}
+
+function updateMapCenter(position){
+  userPosition = position;
+  map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+  map.setZoom(15);
+}
+
+
+function embedSearchBox(map){
+
+  var markers = [];
+
+   // Create the search box and link it to the UI element.
   var input = /** @type {HTMLInputElement} */(
       document.getElementById('pac-input'));
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -55,23 +78,4 @@ function initialize() {
 
     map.fitBounds(bounds);
   });
-
 }
-
-function getLocation(){
-    if (navigator.geolocation)
-        navigator.geolocation.getCurrentPosition(updatePosition);
-    else
-        alert('Tu navegador es basura');
-}
-
-function updatePosition(position){
-  userPosition = position;
-  var mapOptions = {
-    zoom: 15,
-    center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-  };
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);
