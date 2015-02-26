@@ -1,9 +1,14 @@
 var map;
 var userPosition;
-  
+
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function initialize() {
+
+  directionsDisplay = new google.maps.DirectionsRenderer();
   
   var mapOptions = {
     zoom: 4,
@@ -12,6 +17,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
   embedSearchBox(map);
+  directionsDisplay.setMap(map);
  
 }
 
@@ -90,4 +96,25 @@ function setUserMarker(){
     title: '( ͡° ͜ʖ ͡°) te observo'
   }
   marker = new google.maps.Marker(options);
+}
+
+function calcRoute(end) {
+  var start = new google.maps.LatLng(userPosition.coords.latitude, userPosition.coords.longitude);
+  var request = {
+      origin:start,
+      destination:end,
+      travelMode: google.maps.TravelMode.DRIVING
+  };
+  console.log(request);
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+  });
+}
+
+function formSearch(){
+  var end = document.getElementById("place").value;
+  alert(end)
+  calcRoute(end);
 }
