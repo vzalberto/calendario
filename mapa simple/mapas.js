@@ -26,6 +26,8 @@ function updateMapCenter(position){
   userPosition = position;
   map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
   map.setZoom(15);
+
+  setUserMarker();
 }
 
 
@@ -78,4 +80,14 @@ function embedSearchBox(map){
 
     map.fitBounds(bounds);
   });
+}
+
+function setUserMarker(){
+  options = {
+    map: map,
+    position: new google.maps.LatLng(userPosition.coords.latitude, userPosition.coords.longitude),
+    animation: google.maps.Animation.DROP,
+    title: '( ͡° ͜ʖ ͡°) te observo'
+  }
+  marker = new google.maps.Marker(options);
 }

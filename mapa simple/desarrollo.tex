@@ -40,3 +40,20 @@ Antes que otra cosa, debemos solicitar la libería de lugares a Google. Basta in
 
 que, como se puede ver, realiza 3 sencillas acciones: actualizar una variable global con la posición geográfica del usuario, actualiza el centro del mapa previamente inicializado y acerca el zoom.
 
+
+
+Ahora definiremos un marcador para la ubicación del usuario. Solo debemos invocar al constructor del objeto Marker y añadir un objeto de opciones. En este caso se especifican la ubicación (requerida) que será la misma que ya tenemos guardada, la referencia al objeto Map, una animación y un texto que se mostrará cuando el cursor se encuentre sobre el marcador. La función es llamada al final de updateMapCenter que definimos en el inciso anterior.
+
+\begin{lstlisting}
+function setUserMarker(){
+  options = {
+    map: map,
+    position: new google.maps.LatLng(userPosition.coords.latitude, userPosition.coords.longitude),
+    animation: google.maps.Animation.DROP,
+    title: '( ͡° ͜ʖ ͡°) te observo'
+  }
+  marker = new google.maps.Marker(options);
+}
+\end{lstlisting}
+
+{{añadir screen}}
